@@ -20,10 +20,18 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
             .csrf(csrf -> csrf.disable())
-            .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/auth/login").permitAll() // public login endpoint
-                .anyRequest().authenticated()               // all other requests secured
-            )
+//            .authorizeHttpRequests(auth -> auth
+//                .requestMatchers("/auth/login").permitAll() // public login endpoint
+//                .anyRequest().authenticated()               // all other requests secured
+//            )
+        
+        .authorizeHttpRequests(auth -> auth
+        	    .requestMatchers("/auth/login", "/auth/register").permitAll() // allow both login and register publicly
+        	    .anyRequest().authenticated()
+        	)
+
+        
+        
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
         http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);

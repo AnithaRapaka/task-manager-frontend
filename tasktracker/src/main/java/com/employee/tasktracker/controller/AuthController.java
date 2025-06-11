@@ -42,5 +42,18 @@ public class AuthController {
             return ResponseEntity.status(404).body("User not found");
         }
     }
+    
+    
+    
+    @PostMapping("/register")
+    public ResponseEntity<?> register(@RequestBody User user) {
+        if (userRepository.findByUsername(user.getUsername()).isPresent()) {
+            return ResponseEntity.badRequest().body("User already exists");
+        }
+        // Here, you should ideally encode the password before saving (bcrypt for example)
+        userRepository.save(user);
+        return ResponseEntity.ok("User registered successfully");
+    }
+
 
 }
